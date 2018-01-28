@@ -23,12 +23,17 @@ return [
         ],
     ],
 
+    'mongodb' => [
+        'uri' => 'mongodb://127.0.0.1/',
+        'uriOptions' => [],
+        'driverOptions' => [],
+    ],
+
     'dependencies' => [
         'factories' => [
             AuthCodeRepositoryInterface::class => OAuth\Repository\Pdo\Factory\AuthCodeFactory::class,
             AccessTokenRepositoryInterface::class => OAuth\Repository\Pdo\Factory\AccessTokenFactory::class,
             ClientRepositoryInterface::class => OAuth\Repository\Pdo\Factory\ClientFactory::class,
-            PDO::class => Factory\PdoFactory::class,
             RefreshTokenRepositoryInterface::class => OAuth\Repository\Pdo\Factory\RefreshTokenFactory::class,
             ScopeRepositoryInterface::class => OAuth\Repository\Pdo\Factory\ScopeFactory::class,
         ],

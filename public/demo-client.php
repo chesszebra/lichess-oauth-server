@@ -1,7 +1,7 @@
 <?php
 
-$clientId = '6a537ae3700736c27bae67a8a702dba07612014365457c94b127f531383575e860b0d2d3118a66b4';
-$clientSecret = 'cz';
+$clientId = 'b4e072e609b5754cd51d88c70cbc83d974f198cc56f8c78519431a06e4876abda481470e8e6608bb';
+$clientSecret = 'chesszebra';
 
 if (empty($_GET['code']) && empty($_GET['error'])) {
     header('Location: http://oauth.lichess.org.docker/oauth/authorize?state=12345&response_type=code&client_id=' . $clientId . '&scope=test%20test2%20read%20write');

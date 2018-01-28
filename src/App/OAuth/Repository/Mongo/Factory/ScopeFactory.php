@@ -1,9 +1,9 @@
 <?php
 
 
-namespace App\OAuth\Repository\Pdo\Factory;
+namespace App\OAuth\Repository\Mongo\Factory;
 
-use App\OAuth\Repository\Pdo\Scope;
+use App\OAuth\Repository\Mongo\Scope;
 use Psr\Container\ContainerInterface;
 
 final class ScopeFactory

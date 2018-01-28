@@ -78,6 +78,11 @@ final class CreateClient extends Command
 
             $client = new Client($clientId, $clientSecret, $clientName, $redirectUris);
 
+            $scopesList = array_filter(explode(' ', $scopes));
+            foreach ($scopesList as $scope) {
+                $client->allowScope($scope);
+            }
+
             $this->clientCreator->createClient($client);
         }
     }
