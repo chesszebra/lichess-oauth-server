@@ -1,0 +1,37 @@
+{% extends '@layout/default.html.twig' %}
+
+{% block title %}Authorize{% endblock %}
+
+{% block content %}
+    <p>
+        Are you sure you want to give {{ applicationName }} access to your account?
+    </p>
+
+    <p>
+        {{ applicationName }} will be able to:
+    </p>
+
+    <ul>
+        {% for scope in scopes %}
+            <li>
+                {% if scope == 'read' %}
+                    Read stuff.
+                {% elseif scope == 'write' %}
+                    Write stuff.
+                {% else %}
+                    {% trans %}The scope {{ scope }} has not been implemented!{% endtrans %}
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+
+    <form method="post">
+        <button type="submit" name="authorize">
+            Yes
+        </button>
+
+        <button type="submit">
+            No
+        </button>
+    </form>
+{% endblock %}
