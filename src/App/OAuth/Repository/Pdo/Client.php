@@ -2,12 +2,13 @@
 
 namespace App\OAuth\Repository\Pdo;
 
+use App\OAuth\ClientCreatorInterface;
 use App\OAuth\Entity\Client as ClientEntity;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
 use PDO;
 
-final class Client implements ClientRepositoryInterface
+final class Client implements ClientRepositoryInterface, ClientCreatorInterface
 {
     /**
      * @var PDO
@@ -47,6 +48,10 @@ final class Client implements ClientRepositoryInterface
             return null;
         }
 
+        if ($mustValidateSecret && $data['client_secret'] !== $clientSecret) {
+            return null;
+        }
+
         $uris = (array)json_decode($data['redirect_uri'], true);
 
         $client = new ClientEntity(
@@ -63,5 +68,31 @@ final class Client implements ClientRepositoryInterface
         }
 
         return $client;
+    }
+
+    /**
+     * Creates a new client.
+     *
+     * @param ClientEntity $client
+     * @return void
+     */
+    public function createClient(ClientEntity $client)
+    {
+        $data = [
+            'client_id' => $client->getIdentifier(),
+            'client_secret' => $client->getClientSecret(),
+            'name' => $client->getName(),
+            'redirect_uri' => json_encode($client->getRedirectUri()),
+            'scopes' => implode(' ', $client->getScopes()),
+        ];
+
+        $sql = sprintf(
+            'INSERT INTO oauth_client (%s) VALUES (%s)',
+            implode(', ', array_keys($data)),
+            implode(', ', array_fill(0, count($data), '?'))
+        );
+
+        $statement = $this->connection->prepare($sql);
+        $statement->execute(array_values($data));
     }
 }

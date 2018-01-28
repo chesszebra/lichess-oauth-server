@@ -1,7 +1,10 @@
 <?php
 
+$clientId = '6a537ae3700736c27bae67a8a702dba07612014365457c94b127f531383575e860b0d2d3118a66b4';
+$clientSecret = 'cz';
+
 if (empty($_GET['code']) && empty($_GET['error'])) {
-    header('Location: http://oauth.lichess.org.docker/oauth/authorize?state=12345&response_type=code&client_id=1337&scope=test%20test2%20read%20write');
+    header('Location: http://oauth.lichess.org.docker/oauth/authorize?state=12345&response_type=code&client_id=' . $clientId . '&scope=test%20test2%20read%20write');
     exit;
 }
 
@@ -12,16 +15,21 @@ if (!empty($_GET['error'])) {
     exit;
 }
 
+$postFields = [
+    'grant_type' => 'authorization_code',
+    'client_id' => $clientId,
+    'code' => $_GET['code'],
+];
+
+if ($clientSecret) {
+    $postFields['client_secret'] = $clientSecret;
+}
+
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, 'http://oauth.lichess.org/oauth');
 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
 curl_setopt($ch, CURLOPT_POST, 1);
-curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
-    'grant_type' => 'authorization_code',
-    'client_id' => '1337',
-    'client_secret' => 'too1337',
-    'code' => $_GET['code'],
-]));
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postFields));
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
 $result = curl_exec($ch);
