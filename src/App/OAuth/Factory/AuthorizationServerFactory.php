@@ -2,6 +2,7 @@
 
 namespace App\OAuth\Factory;
 
+use App\OAuth\ResponseTypes\BearerTokenResponse;
 use DateInterval;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Grant\AuthCodeGrant;
@@ -47,7 +48,7 @@ final class AuthorizationServerFactory
             $scopeRepository,
             $config['private_key_path'],
             $config['encryption_key'],
-            $responseType = null
+            new BearerTokenResponse()
         );
 
         $server->enableGrantType(
