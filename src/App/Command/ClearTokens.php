@@ -3,9 +3,6 @@
 namespace App\Command;
 
 use App\OAuth\ExpirableTokensInterface;
-use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
-use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
-use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -13,17 +10,17 @@ use Symfony\Component\Console\Output\OutputInterface;
 final class ClearTokens extends Command
 {
     /**
-     * @var AccessTokenRepositoryInterface
+     * @var ExpirableTokensInterface
      */
     private $accessTokenRepository;
 
     /**
-     * @var RefreshTokenRepositoryInterface
+     * @var ExpirableTokensInterface
      */
     private $refreshTokenRepository;
 
     /**
-     * @var AuthCodeRepositoryInterface
+     * @var ExpirableTokensInterface
      */
     private $authCodeRepository;
 
