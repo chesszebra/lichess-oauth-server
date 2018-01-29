@@ -12,6 +12,7 @@ use League\OAuth2\Server\Entities\ScopeEntityInterface;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\RequestTypes\AuthorizationRequest;
 use Psr\Http\Message\ServerRequestInterface;
+use Twig_Error_Loader;
 use Zend\Diactoros\Response;
 use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Diactoros\Response\RedirectResponse;
@@ -99,11 +100,19 @@ final class OAuthAuthorize implements ServerMiddlewareInterface
 
         $client = $authorizationRequest->getClient();
 
-        return new HtmlResponse($this->template->render('app::oauth-authorize', [
+        $parameters = [
             'applicationName' => $client->getName(),
             'client' => $client,
             'scopes' => $this->getValidRequestedScopes($client, $authorizationRequest->getScopes()),
-        ]));
+        ];
+
+        try {
+            $html = $this->template->render('app::oauth-authorize-custom', $parameters);
+        } catch (Twig_Error_Loader $e) {
+            $html = $this->template->render('app::oauth-authorize', $parameters);
+        }
+
+        return new HtmlResponse($html);
     }
 
     private function isAuthenticated()
