@@ -13,18 +13,23 @@ final class ClientFactory
     /**
      * @param ContainerInterface $container
      * @return Client
+     * @throws \MongoDB\Exception\InvalidArgumentException
+     * @throws \Psr\Container\NotFoundExceptionInterface
      * @throws \Psr\Container\ContainerExceptionInterface
      */
     public function __invoke(ContainerInterface $container)
     {
+        /** @var array $config */
+        $config = $container->get('config');
+
         /** @var MongoClient $client */
         $client = $container->get(MongoClient::class);
 
         /** @var Database $database */
-        $database = $client->selectDatabase('lichess');
+        $database = $client->selectDatabase($config['mongodb']['database']);
 
         /** @var Collection $collection */
-        $collection = $database->selectCollection('oauth_client');
+        $collection = $database->selectCollection($config['mongodb']['collections']['client']);
 
         return new Client($collection);
     }

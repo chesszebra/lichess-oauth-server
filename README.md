@@ -74,3 +74,8 @@ the development configuration files. This will make development easier.
 cp config/development.config.php.dist config/development.config.php
 cp config/autoload/development.local.php.dist config/autoload/development.local.php
 ```
+
+## Demo Client
+
+One could create a file `public/demo-client.php` or simply copy 
+`examples/demo-client.php` to test the server.

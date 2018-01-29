@@ -19,14 +19,17 @@ final class AccessTokenFactory
      */
     public function __invoke(ContainerInterface $container)
     {
+        /** @var array $config */
+        $config = $container->get('config');
+
         /** @var MongoClient $client */
         $client = $container->get(MongoClient::class);
 
         /** @var Database $database */
-        $database = $client->selectDatabase('lichess');
+        $database = $client->selectDatabase($config['mongodb']['database']);
 
         /** @var Collection $collection */
-        $collection = $database->selectCollection('oauth_access_token');
+        $collection = $database->selectCollection($config['mongodb']['collections']['access_token']);
 
         return new AccessToken($collection);
     }

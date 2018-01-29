@@ -27,6 +27,13 @@ return [
         'uri' => 'mongodb://127.0.0.1/',
         'uriOptions' => [],
         'driverOptions' => [],
+        'database' => 'lichess',
+        'collections' => [
+            'access_token' => 'oauth_access_token',
+            'authorization_code' => 'oauth_authorization_code',
+            'client' => 'oauth_client',
+            'refresh_token' => 'oauth_refresh_token',
+        ],
     ],
 
     'dependencies' => [

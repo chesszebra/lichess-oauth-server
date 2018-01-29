@@ -13,20 +13,23 @@ final class AuthCodeFactory
     /**
      * @param ContainerInterface $container
      * @return AuthCode
-     * @throws \Psr\Container\NotFoundExceptionInterface
      * @throws \MongoDB\Exception\InvalidArgumentException
+     * @throws \Psr\Container\NotFoundExceptionInterface
      * @throws \Psr\Container\ContainerExceptionInterface
      */
     public function __invoke(ContainerInterface $container)
     {
+        /** @var array $config */
+        $config = $container->get('config');
+
         /** @var MongoClient $client */
         $client = $container->get(MongoClient::class);
 
         /** @var Database $database */
-        $database = $client->selectDatabase('lichess');
+        $database = $client->selectDatabase($config['mongodb']['database']);
 
         /** @var Collection $collection */
-        $collection = $database->selectCollection('oauth_authorization_code');
+        $collection = $database->selectCollection($config['mongodb']['collections']['authorization_code']);
 
         return new AuthCode($collection);
     }
