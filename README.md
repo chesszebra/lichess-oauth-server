@@ -7,24 +7,20 @@ for Lichess.
 
 All commands are meant to be ran from the root of your project directory.
 
-### Using Docker
-
 Clone the repository to your favourite destination path.
 
 ```
 git clone https://github.com/chesszebra/lichess-oauth-server.git
 ```
 
+From here choose your preferred way of working.
+
+### Docker
+
 Install the PHP dependencies via Docker:
 
 ```
 docker run --rm -it -v $(pwd):/data chesszebra/composer:7.0 install
-```
-
-Create the local configuration file used to run the application:
-
-```
-cp config/autoload/local.php.dist config/autoload/local.php
 ```
 
 The OAuth server requires a public and private key, let's create them:
@@ -40,15 +36,39 @@ We also need an encryption key, let's create it:
 docker run --rm -it -v $(pwd):/data chesszebra/php:7.0-cli -r 'echo base64_encode(random_bytes(32)), PHP_EOL;'
 ```
 
-Now enter the correct values inside the newly configuration files. 
-The configuration files should be self explanatory.
+## Configuration
+
+Enter the correct values inside the configuration files we are about
+to create now. The configuration files should be self explanatory.
+
+Create the local configuration file used to run the application:
+
+```
+cp config/autoload/local.php.dist config/autoload/local.php
+```
+
+### Cache
 
 **NOTE:** It could be that a config cache is created, make sure
-to remove `data/config-cache.php`.
+to remove `data/config-cache.php` in order for the config to be reloaded.
 
-### Developers
+### Database
 
-For developers also create the development configuration files:
+Depending on your preferred storage system, either enable the PDO or MongoDB dependencies.
+Also enter the correct database information.
+
+### Templates
+
+If you want to override the HTML template, create a new Twig template
+`templates/app/oauth-authorize-custom.html.twig`. For an example, have a 
+look at `templates/app/oauth-authorize.html.twig`. If the custom template 
+does not exists, the application will automatically fallback to 
+`templates/app/oauth-authorize.html.twig`. 
+
+### Development
+
+If you are developing the application, it might be wise to enable
+the development configuration files. This will make development easier.
 
 ```
 cp config/development.config.php.dist config/development.config.php
