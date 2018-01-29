@@ -61,7 +61,7 @@ final class OAuthAuthorize implements ServerMiddlewareInterface
      */
     public function process(ServerRequestInterface $request, DelegateInterface $delegate)
     {
-        if (!$this->isAuthenticated()) {
+        if (!$this->isAuthenticated($request)) {
             return new RedirectResponse($this->authenticateUrl);
         }
 
@@ -129,8 +129,9 @@ final class OAuthAuthorize implements ServerMiddlewareInterface
         return $result;
     }
 
-    private function isAuthenticated()
+    private function isAuthenticated(ServerRequestInterface $request)
     {
+        //var_dump($request->getCookieParams());exit;
         return true;
     }
 
