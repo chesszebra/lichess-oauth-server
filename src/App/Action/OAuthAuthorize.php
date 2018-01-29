@@ -84,7 +84,7 @@ final class OAuthAuthorize implements ServerMiddlewareInterface
             $approved = array_key_exists('authorize', $postData);
 
             $authorizationRequest->setAuthorizationApproved($approved);
-            $authorizationRequest->setUser(new User(42));
+            $authorizationRequest->setUser(new User($this->getUserIdentifier()));
 
             try {
                 return $this->oauthServer->completeAuthorizationRequest($authorizationRequest, $response);
@@ -115,11 +115,6 @@ final class OAuthAuthorize implements ServerMiddlewareInterface
         return new HtmlResponse($html);
     }
 
-    private function isAuthenticated()
-    {
-        return true;
-    }
-
     public function getValidRequestedScopes(Client $client, array $scopes)
     {
         $result = [];
@@ -132,5 +127,15 @@ final class OAuthAuthorize implements ServerMiddlewareInterface
         }
 
         return $result;
+    }
+
+    private function isAuthenticated()
+    {
+        return true;
+    }
+
+    private function getUserIdentifier()
+    {
+        return 42;
     }
 }
