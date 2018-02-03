@@ -7,23 +7,25 @@
         Are you sure you want to give {{ applicationName }} access to your account?
     </p>
 
-    <p>
-        {{ applicationName }} will be able to:
-    </p>
+    {% if scopes %}
+        <p>
+            {{ applicationName }} will be able to:
+        </p>
 
-    <ul>
-        {% for scope in scopes %}
-            <li>
-                {% if scope == 'read' %}
-                    Read stuff.
-                {% elseif scope == 'write' %}
-                    Write stuff.
-                {% else %}
-                    {% trans %}The scope {{ scope }} has not been implemented!{% endtrans %}
-                {% endif %}
-            </li>
-        {% endfor %}
-    </ul>
+        <ul>
+            {% for scope in scopes %}
+                <li>
+                    {% if scope == 'read' %}
+                        Read stuff.
+                    {% elseif scope == 'write' %}
+                        Write stuff.
+                    {% else %}
+                        {% trans %}The scope {{ scope }} has not been implemented!{% endtrans %}
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 
     <form method="post">
         <button type="submit" name="authorize">
