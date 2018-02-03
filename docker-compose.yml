@@ -28,6 +28,14 @@ services:
       - mongoserver
       - mysqlserver
 
+  php-nginx:
+    image: php:7-fpm
+    volumes:
+      - .:/data
+    links:
+      - mongoserver
+      - mysqlserver
+
   phpmyadmin:
     image: chesszebra/phpmyadmin
     environment:
@@ -37,12 +45,22 @@ services:
     links:
       - mysqlserver
 
-  webserver:
-    image: chesszebra/php:7.0-apache
+#  webserver-apache:
+#    image: chesszebra/php:7.0-apache
+#    container_name: "oauth.lichess.org"
+#    volumes:
+#      - .:/var/www/html
+#    links:
+#      - mongoserver
+#      - mysqlserver
+
+  webserver-nginx:
+    image: nginx
     container_name: "oauth.lichess.org"
     volumes:
-      - .:/var/www/html
+      - .:/data
+      - ./data/docker/site.conf:/etc/nginx/conf.d/site.conf
     links:
       - mongoserver
       - mysqlserver
-
+      - php-nginx
