@@ -9,6 +9,12 @@ use Zend\Expressive\Template\TemplateRendererInterface;
 
 final class OAuthAuthorizeFactory
 {
+    /**
+     * @param ContainerInterface $container
+     * @return OAuthAuthorize
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     */
     public function __invoke(ContainerInterface $container)
     {
         /** @var array $config */
@@ -20,6 +26,11 @@ final class OAuthAuthorizeFactory
         /** @var TemplateRendererInterface $template */
         $template = $container->get(TemplateRendererInterface::class);
 
-        return new OAuthAuthorize($config['authenticate_url'], $oauthServer, $template);
+        return new OAuthAuthorize(
+            $config['authenticate_url'],
+            $config['authenticate_cookie'],
+            $oauthServer,
+            $template
+        );
     }
 }

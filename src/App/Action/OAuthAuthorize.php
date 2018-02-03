@@ -29,6 +29,13 @@ final class OAuthAuthorize implements ServerMiddlewareInterface
     private $authenticateUrl;
 
     /**
+     * The name of the cookie used to store the authentication session.
+     *
+     * @var string
+     */
+    private $authenticationCookie;
+
+    /**
      * The OAuth authorization server.
      *
      * @var AuthorizationServer
@@ -42,12 +49,29 @@ final class OAuthAuthorize implements ServerMiddlewareInterface
      */
     private $template;
 
+    /**
+     * The user id of the currently authenticated user.
+     *
+     * @var string|null
+     */
+    private $userId;
+
+    /**
+     * Initializes a new instance of this class.
+     *
+     * @param string $authenticateUrl
+     * @param string $authenticationCookie
+     * @param AuthorizationServer $oauthServer
+     * @param TemplateRendererInterface|null $template
+     */
     public function __construct(
         string $authenticateUrl,
+        string $authenticationCookie,
         AuthorizationServer $oauthServer,
         TemplateRendererInterface $template = null
     ) {
         $this->authenticateUrl = $authenticateUrl;
+        $this->authenticationCookie = $authenticationCookie;
         $this->oauthServer = $oauthServer;
         $this->template = $template;
     }
@@ -129,14 +153,45 @@ final class OAuthAuthorize implements ServerMiddlewareInterface
         return $result;
     }
 
+    /**
+     * @param ServerRequestInterface $request
+     * @return bool
+     * @throws \Zend\Http\Exception\InvalidArgumentException
+     */
     private function isAuthenticated(ServerRequestInterface $request)
     {
-        //var_dump($request->getCookieParams());exit;
+        $cookies = $request->getCookieParams();
+
+        if (!array_key_exists($this->authenticationCookie, $cookies)) {
+            return false;
+        }
+
+        $httpClient = new \Zend\Http\Client('https://listage.ovh/account/info', [
+            'encodecookies' => false,
+        ]);
+        $httpClient->setHeaders([
+            'Accept' => 'application/vnd.lichess.v3+json',
+            'User-Agent' => 'chesszebra/lichess-oauth-server',
+        ]);
+        $httpClient->setCookies([
+            $this->authenticationCookie => $cookies[$this->authenticationCookie],
+        ]);
+
+        $response = $httpClient->send();
+
+        $json = json_decode($response->getBody(), true);
+
+        if (!$json || array_key_exists('error', $json)) {
+            return false;
+        }
+
+        $this->userId = $json['id'];
+
         return true;
     }
 
     private function getUserIdentifier()
     {
-        return 42;
+        return $this->userId;
     }
 }

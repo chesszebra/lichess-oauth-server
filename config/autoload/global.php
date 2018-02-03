@@ -11,6 +11,7 @@ use PDO;
 
 return [
     'authenticate_url' => 'https://lichess.org',
+    'authenticate_cookie' => 'lila2',
     'private_key_path' => __DIR__ . '/../../data/private.key',
     'encryption_key' => '',
 
