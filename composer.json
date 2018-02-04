@@ -11,7 +11,7 @@
         "php": "^7.0",
         "http-interop/http-middleware": "^0.4.1",
         "league/oauth2-server": "^6.1",
-        "mongodb/mongodb": "^1.2",
+        "mongodb/mongodb": "^1.0",
         "roave/security-advisories": "dev-master",
         "symfony/console": "^3.4",
         "twig/extensions": "^1.5",
