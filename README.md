@@ -26,7 +26,7 @@ docker run --rm -it -v $(pwd):/data chesszebra/composer:7.0 install
 The OAuth server requires a public and private key, let's create them:
 
 ```
-openssl genrsa -out private.key 2048
+openssl genrsa -out data/private.key 2048
 openssl rsa -in data/private.key -pubout -out data/public.key
 ```
 
