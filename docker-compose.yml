@@ -28,8 +28,8 @@ services:
       - mongoserver
       - mysqlserver
 
-  php-nginx:
-    image: php:7-fpm
+  php-fpm:
+    image: chesszebra/php:7.0-fpm
     volumes:
       - .:/data
     links:
@@ -59,8 +59,9 @@ services:
     container_name: "oauth.lichess.org"
     volumes:
       - .:/data
+      - ./data/docker/nginx.conf:/etc/nginx/nginx.conf
       - ./data/docker/site.conf:/etc/nginx/conf.d/site.conf
     links:
       - mongoserver
       - mysqlserver
-      - php-nginx
+      - php-fpm
