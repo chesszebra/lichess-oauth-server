@@ -8,7 +8,6 @@ use DateTime;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Entities\ScopeEntityInterface;
-use League\OAuth2\Server\Exception\UniqueTokenIdentifierConstraintViolationException;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 use MongoDB\BSON\UTCDateTime;
 use MongoDB\Collection;
@@ -51,7 +50,6 @@ final class AccessToken implements AccessTokenRepositoryInterface, ExpirableToke
      *
      * @throws \MongoDB\Exception\InvalidArgumentException
      * @throws \MongoDB\Driver\Exception\RuntimeException
-     * @throws UniqueTokenIdentifierConstraintViolationException
      */
     public function persistNewAccessToken(AccessTokenEntityInterface $accessTokenEntity)
     {
@@ -66,7 +64,7 @@ final class AccessToken implements AccessTokenRepositoryInterface, ExpirableToke
             'access_token_id' => $accessTokenEntity->getIdentifier(),
             'client_id' => $accessTokenEntity->getClient()->getIdentifier(),
             'user_id' => $accessTokenEntity->getUserIdentifier(),
-            'expire_date' => new UTCDateTime($accessTokenEntity->getExpiryDateTime()),
+            'expire_date' => new UTCDateTime($accessTokenEntity->getExpiryDateTime()->getTimestamp() * 1000),
             'scopes' => $scopes,
         ];
 
@@ -77,7 +75,6 @@ final class AccessToken implements AccessTokenRepositoryInterface, ExpirableToke
      * Revoke an access token.
      *
      * @param string $tokenId
-     * @throws \MongoDB\Exception\UnsupportedException
      * @throws \MongoDB\Exception\InvalidArgumentException
      * @throws \MongoDB\Driver\Exception\RuntimeException
      */
@@ -94,7 +91,6 @@ final class AccessToken implements AccessTokenRepositoryInterface, ExpirableToke
      * @param string $tokenId
      *
      * @return bool Return true if this token has been revoked
-     * @throws \MongoDB\Exception\UnsupportedException
      * @throws \MongoDB\Exception\InvalidArgumentException
      * @throws \MongoDB\Driver\Exception\RuntimeException
      */
@@ -120,7 +116,6 @@ final class AccessToken implements AccessTokenRepositoryInterface, ExpirableToke
 
     /**
      *
-     * @throws \MongoDB\Exception\UnsupportedException
      * @throws \MongoDB\Exception\InvalidArgumentException
      * @throws \MongoDB\Driver\Exception\RuntimeException
      */

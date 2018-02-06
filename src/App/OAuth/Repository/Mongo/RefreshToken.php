@@ -6,7 +6,6 @@ use App\OAuth\Entity\RefreshToken as RefreshTokenEntity;
 use App\OAuth\ExpirableTokensInterface;
 use DateTime;
 use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
-use League\OAuth2\Server\Exception\UniqueTokenIdentifierConstraintViolationException;
 use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
 use MongoDB\BSON\UTCDateTime;
 use MongoDB\Collection;
@@ -45,14 +44,13 @@ final class RefreshToken implements RefreshTokenRepositoryInterface, ExpirableTo
      *
      * @throws \MongoDB\Exception\InvalidArgumentException
      * @throws \MongoDB\Driver\Exception\RuntimeException
-     * @throws UniqueTokenIdentifierConstraintViolationException
      */
     public function persistNewRefreshToken(RefreshTokenEntityInterface $refreshTokenEntity)
     {
         $data = [
             'refresh_token_id' => $refreshTokenEntity->getIdentifier(),
             'access_token_id' => $refreshTokenEntity->getAccessToken()->getIdentifier(),
-            'expire_date' => new UTCDateTime($refreshTokenEntity->getExpiryDateTime()),
+            'expire_date' => new UTCDateTime($refreshTokenEntity->getExpiryDateTime()->getTimestamp() * 1000),
         ];
 
         $this->collection->insertOne($data);
@@ -62,7 +60,6 @@ final class RefreshToken implements RefreshTokenRepositoryInterface, ExpirableTo
      * Revoke the refresh token.
      *
      * @param string $tokenId
-     * @throws \MongoDB\Exception\UnsupportedException
      * @throws \MongoDB\Exception\InvalidArgumentException
      * @throws \MongoDB\Driver\Exception\RuntimeException
      */
@@ -79,7 +76,6 @@ final class RefreshToken implements RefreshTokenRepositoryInterface, ExpirableTo
      * @param string $tokenId
      *
      * @return bool Return true if this token has been revoked
-     * @throws \MongoDB\Exception\UnsupportedException
      * @throws \MongoDB\Exception\InvalidArgumentException
      * @throws \MongoDB\Driver\Exception\RuntimeException
      */
@@ -104,7 +100,6 @@ final class RefreshToken implements RefreshTokenRepositoryInterface, ExpirableTo
     }
 
     /**
-     * @throws \MongoDB\Exception\UnsupportedException
      * @throws \MongoDB\Exception\InvalidArgumentException
      * @throws \MongoDB\Driver\Exception\RuntimeException
      */

@@ -7,7 +7,6 @@ use App\OAuth\ExpirableTokensInterface;
 use DateTime;
 use League\OAuth2\Server\Entities\AuthCodeEntityInterface;
 use League\OAuth2\Server\Entities\ScopeEntityInterface;
-use League\OAuth2\Server\Exception\UniqueTokenIdentifierConstraintViolationException;
 use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
 use MongoDB\BSON\UTCDateTime;
 use MongoDB\Collection;
@@ -46,7 +45,6 @@ final class AuthCode implements AuthCodeRepositoryInterface, ExpirableTokensInte
      *
      * @throws \MongoDB\Exception\InvalidArgumentException
      * @throws \MongoDB\Driver\Exception\RuntimeException
-     * @throws UniqueTokenIdentifierConstraintViolationException
      */
     public function persistNewAuthCode(AuthCodeEntityInterface $authCodeEntity)
     {
@@ -61,7 +59,7 @@ final class AuthCode implements AuthCodeRepositoryInterface, ExpirableTokensInte
             'auth_code_id' => $authCodeEntity->getIdentifier(),
             'client_id' => $authCodeEntity->getClient()->getIdentifier(),
             'user_id' => $authCodeEntity->getUserIdentifier(),
-            'expire_date' => new UTCDateTime($authCodeEntity->getExpiryDateTime()),
+            'expire_date' => new UTCDateTime($authCodeEntity->getExpiryDateTime()->getTimestamp() * 1000),
             'redirect_uri' => $authCodeEntity->getRedirectUri(),
             'scopes' => $scopes,
         ];
@@ -73,7 +71,6 @@ final class AuthCode implements AuthCodeRepositoryInterface, ExpirableTokensInte
      * Revoke an auth code.
      *
      * @param string $codeId
-     * @throws \MongoDB\Exception\UnsupportedException
      * @throws \MongoDB\Exception\InvalidArgumentException
      * @throws \MongoDB\Driver\Exception\RuntimeException
      */
@@ -90,7 +87,6 @@ final class AuthCode implements AuthCodeRepositoryInterface, ExpirableTokensInte
      * @param string $codeId
      *
      * @return bool Return true if this code has been revoked
-     * @throws \MongoDB\Exception\UnsupportedException
      * @throws \MongoDB\Exception\InvalidArgumentException
      * @throws \MongoDB\Driver\Exception\RuntimeException
      */
@@ -115,7 +111,6 @@ final class AuthCode implements AuthCodeRepositoryInterface, ExpirableTokensInte
     }
 
     /**
-     * @throws \MongoDB\Exception\UnsupportedException
      * @throws \MongoDB\Exception\InvalidArgumentException
      * @throws \MongoDB\Driver\Exception\RuntimeException
      */
