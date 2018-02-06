@@ -5,6 +5,8 @@
     "homepage": "https://github.com/chesszebra/lichess-oauth-server",
     "license": "AGPL3",
     "config": {
+        "optimize-autoloader": true,
+        "process-timeout": 5000,
         "sort-packages": true
     },
     "require": {
