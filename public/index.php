@@ -12,6 +12,11 @@ require 'vendor/autoload.php';
  * Self-called anonymous function that creates its own scope and keep the global namespace clean.
  */
 call_user_func(function () {
+    $logger = new \Monolog\Logger('error-logger');
+    $logger->pushHandler(new \Monolog\Handler\StreamHandler('data/logs/error-log-' . date('Ymd') . '.log'));
+
+    \Monolog\ErrorHandler::register($logger);
+
     /** @var \Psr\Container\ContainerInterface $container */
     $container = require 'config/container.php';
 
