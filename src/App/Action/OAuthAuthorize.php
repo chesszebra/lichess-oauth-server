@@ -36,6 +36,13 @@ final class OAuthAuthorize implements ServerMiddlewareInterface
     private $authenticationCookie;
 
     /**
+     * The url used to check if the user is authenticated.
+     *
+     * @var string
+     */
+    private $checkAuthenticationUrl;
+
+    /**
      * The OAuth authorization server.
      *
      * @var AuthorizationServer
@@ -61,17 +68,20 @@ final class OAuthAuthorize implements ServerMiddlewareInterface
      *
      * @param string $authenticateUrl
      * @param string $authenticationCookie
+     * @param string $checkAuthenticationUrl
      * @param AuthorizationServer $oauthServer
      * @param TemplateRendererInterface|null $template
      */
     public function __construct(
         string $authenticateUrl,
         string $authenticationCookie,
+        string $checkAuthenticationUrl,
         AuthorizationServer $oauthServer,
         TemplateRendererInterface $template = null
     ) {
         $this->authenticateUrl = $authenticateUrl;
         $this->authenticationCookie = $authenticationCookie;
+        $this->checkAuthenticationUrl = $checkAuthenticationUrl;
         $this->oauthServer = $oauthServer;
         $this->template = $template;
     }
@@ -166,7 +176,7 @@ final class OAuthAuthorize implements ServerMiddlewareInterface
             return false;
         }
 
-        $httpClient = new \Zend\Http\Client('https://listage.ovh/account/info', [
+        $httpClient = new \Zend\Http\Client($this->checkAuthenticationUrl, [
             'encodecookies' => false,
         ]);
         $httpClient->setHeaders([

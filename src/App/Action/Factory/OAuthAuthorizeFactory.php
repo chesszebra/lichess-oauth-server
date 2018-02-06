@@ -29,6 +29,7 @@ final class OAuthAuthorizeFactory
         return new OAuthAuthorize(
             $config['authenticate_url'],
             $config['authenticate_cookie'],
+            $config['check_authentication_url'],
             $oauthServer,
             $template
         );
