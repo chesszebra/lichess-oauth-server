@@ -10,7 +10,7 @@ use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
 use PDO;
 
 return [
-    'authenticate_url' => 'https://lichess.org/login?referer=%s',
+    'authenticate_url' => 'https://lichess.org/login?referrer=%s',
     'authenticate_cookie' => 'lila2',
     'check_authentication_url' => 'https://lichess.org/account/info',
     'private_key_path' => __DIR__ . '/../../data/private.key',
