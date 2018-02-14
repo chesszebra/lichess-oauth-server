@@ -97,6 +97,8 @@ final class OAuthAuthorize implements ServerMiddlewareInterface
     public function process(ServerRequestInterface $request, DelegateInterface $delegate)
     {
         if (!$this->isAuthenticated($request)) {
+            $this->authenticateUrl .= '?referer=' . urlencode($request->getUri());
+
             return new RedirectResponse($this->authenticateUrl);
         }
 
