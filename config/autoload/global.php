@@ -16,6 +16,15 @@ return [
     'private_key_path' => __DIR__ . '/../../data/private.key',
     'encryption_key' => '',
 
+    'grant_enabled_auth_code' => true,
+    'grant_enabled_client_credentials' => true,
+    'grant_enabled_refresh_token' => true,
+
+    // Based on https://en.wikipedia.org/wiki/ISO_8601#Durations
+    'ttl_access_token' => 'PT1H',
+    'ttl_auth_code' => 'PT10M',
+    'ttl_refresh_token' => 'P1M',
+
     'pdo' => [
         'dsn' => '',
         'username' => '',
