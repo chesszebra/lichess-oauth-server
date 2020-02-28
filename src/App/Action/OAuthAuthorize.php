@@ -175,7 +175,6 @@ final class OAuthAuthorize implements ServerMiddlewareInterface
     private function isAuthenticated(ServerRequestInterface $request)
     {
         $cookies = $request->getCookieParams();
-        $cookies[$this->authenticationCookie] = '994b6d55cf796a4c7778e3559770d34f08b5774d-sid=kZz5Inv2sHd9h4kPwSN1gK&sessionId=WNxFdKfhvOaOwnDVh42Lw0';
 
         if (!array_key_exists($this->authenticationCookie, $cookies)) {
             return false;
