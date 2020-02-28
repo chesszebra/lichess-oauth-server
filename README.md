@@ -17,12 +17,6 @@ From here choose your preferred way of working.
 
 ### Docker
 
-Install the PHP dependencies via Docker:
-
-```
-docker run --rm -it -v $(pwd):/data chesszebra/composer:7.0 install
-```
-
 The OAuth server requires a public and private key, let's create them:
 
 ```
@@ -33,7 +27,7 @@ openssl rsa -in data/private.key -pubout -out data/public.key
 We also need an encryption key, let's create it:
 
 ```
-docker run --rm -it -v $(pwd):/data chesszebra/php:7.0-cli -r 'echo base64_encode(random_bytes(32)), PHP_EOL;'
+docker run --rm -it -v $(pwd):/data chesszebra/php:7.2-cli -r 'echo base64_encode(random_bytes(32)), PHP_EOL;'
 ```
 
 ## Configuration
