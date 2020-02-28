@@ -1,8 +1,8 @@
 <?php
 
-use Zend\ConfigAggregator\ConfigAggregator;
-use Zend\Expressive\Container;
-use Zend\Expressive\Middleware\ErrorResponseGenerator;
+use Laminas\ConfigAggregator\ConfigAggregator;
+use Mezzio\Container;
+use Mezzio\Middleware\ErrorResponseGenerator;
 
 return [
     'debug' => true,
@@ -13,8 +13,8 @@ return [
         ],
         'factories' => [
             ErrorResponseGenerator::class => Container\WhoopsErrorResponseGeneratorFactory::class,
-            'Zend\Expressive\Whoops' => Container\WhoopsFactory::class,
-            'Zend\Expressive\WhoopsPageHandler' => Container\WhoopsPageHandlerFactory::class,
+            'Mezzio\Whoops' => Container\WhoopsFactory::class,
+            'Mezzio\WhoopsPageHandler' => Container\WhoopsPageHandlerFactory::class,
         ],
     ],
 

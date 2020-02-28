@@ -1,12 +1,12 @@
 <?php
 
-use Zend\Expressive\Router\RouterInterface;
-use Zend\Expressive\Router\ZendRouter;
+use Mezzio\Router\LaminasRouter;
+use Mezzio\Router\RouterInterface;
 
 return [
     'dependencies' => [
         'invokables' => [
-            RouterInterface::class => ZendRouter::class,
+            RouterInterface::class => LaminasRouter::class,
         ],
     ],
 ];

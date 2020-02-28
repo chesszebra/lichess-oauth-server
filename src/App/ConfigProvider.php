@@ -2,8 +2,8 @@
 
 namespace App;
 
+use Laminas\ServiceManager\Factory\InvokableFactory;
 use League\OAuth2\Server\AuthorizationServer;
-use Zend\ServiceManager\Factory\InvokableFactory;
 
 /**
  * The configuration provider for the App module

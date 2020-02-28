@@ -5,6 +5,10 @@ if (PHP_SAPI === 'cli-server' && $_SERVER['SCRIPT_FILENAME'] !== __FILE__) {
     return false;
 }
 
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+
 chdir(dirname(__DIR__));
 require 'vendor/autoload.php';
 
@@ -20,8 +24,8 @@ call_user_func(function () {
     /** @var \Psr\Container\ContainerInterface $container */
     $container = require 'config/container.php';
 
-    /** @var \Zend\Expressive\Application $app */
-    $app = $container->get(\Zend\Expressive\Application::class);
+    /** @var \Mezzio\Application $app */
+    $app = $container->get(\Mezzio\Application::class);
 
     // Import programmatic/declarative middleware pipeline and routing
     // configuration statements

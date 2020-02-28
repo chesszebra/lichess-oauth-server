@@ -2,20 +2,20 @@
 
 namespace App;
 
+use Laminas\ServiceManager\Factory\InvokableFactory;
+use Laminas\Stratigility\Middleware\ErrorHandler;
+use Mezzio\Application;
+use Mezzio\Container;
+use Mezzio\Delegate;
+use Mezzio\Helper;
+use Mezzio\Middleware;
 use MongoDB\Client;
 use PDO;
-use Zend\Expressive\Application;
-use Zend\Expressive\Container;
-use Zend\Expressive\Delegate;
-use Zend\Expressive\Helper;
-use Zend\Expressive\Middleware;
-use Zend\ServiceManager\Factory\InvokableFactory;
-use Zend\Stratigility\Middleware\ErrorHandler;
 
 return [
     'dependencies' => [
         'aliases' => [
-            'Zend\Expressive\Delegate\DefaultDelegate' => Delegate\NotFoundDelegate::class,
+            'Mezzio\Delegate\DefaultDelegate' => Delegate\NotFoundDelegate::class,
         ],
         'factories' => [
             Application::class => Container\ApplicationFactory::class,

@@ -36,7 +36,7 @@ final class Client implements ClientRepositoryInterface, ClientCreatorInterface
      *
      * @return ClientEntityInterface
      */
-    public function getClientEntity($clientIdentifier, $grantType, $clientSecret = null, $mustValidateSecret = true)
+    public function getClientEntity($clientIdentifier, $grantType = null, $clientSecret = null, $mustValidateSecret = true)
     {
         $statement = $this->connection->prepare("SELECT * FROM oauth_client WHERE client_id = :id");
         $statement->bindValue('id', $clientIdentifier);

@@ -1,6 +1,6 @@
 <?php
 
-/** @var \Zend\Expressive\Application $app */
+/** @var \Mezzio\Application $app */
 
 $app->get('/', App\Action\Index::class, 'index');
 $app->post('/oauth', App\Action\OAuthToken::class, 'oauth.token');

@@ -8,12 +8,7 @@ use Psr\Container\ContainerInterface;
 
 final class OAuthTokenFactory
 {
-    /**
-     * @param ContainerInterface $container
-     * @return OAuthToken
-     * @throws \Psr\Container\ContainerExceptionInterface
-     */
-    public function __invoke(ContainerInterface $container)
+    public function __invoke(ContainerInterface $container): OAuthToken
     {
         /** @var AuthorizationServer $oauthServer */
         $oauthServer = $container->get(AuthorizationServer::class);
