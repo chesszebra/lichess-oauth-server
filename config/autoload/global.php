@@ -17,7 +17,7 @@ return [
     'encryption_key' => '',
 
     'grant_enabled_auth_code' => true,
-    'grant_enabled_client_credentials' => true,
+    'grant_enabled_client_credentials' => false,
     'grant_enabled_refresh_token' => true,
 
     // Based on https://en.wikipedia.org/wiki/ISO_8601#Durations
